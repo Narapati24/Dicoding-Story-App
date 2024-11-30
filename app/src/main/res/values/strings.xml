@@ -10,4 +10,6 @@
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
     <string name="name">Nama</string>
     <string name="signup">Daftar</string>
+    <string name="register_success">Akun berhasil didaftarkan</string>
+    <string name="register_failed">Akun gagal didaftarkan</string>
 </resources>
