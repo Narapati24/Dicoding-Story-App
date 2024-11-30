@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Dicoding Story App</string>
+    <string name="title_login_page">Sudah siap untuk upgrade skill?</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Masuk</string>
+    <string name="register_login_page">Belum memiliki akun?</string>
+    <string name="register">Register</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="name">Nama</string>
+    <string name="signup">Daftar</string>
 </resources>
