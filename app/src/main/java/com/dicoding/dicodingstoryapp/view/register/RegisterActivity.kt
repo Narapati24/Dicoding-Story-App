@@ -1,6 +1,7 @@
 package com.dicoding.dicodingstoryapp.view.register
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,11 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupView()
+        setupButton()
+    }
+
+    private fun setupView(){
         viewModel.registerSuccess.observe(this){ success ->
             when (success) {
                 true -> {
@@ -32,7 +38,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 false -> {
-                    Toast.makeText(this, getString(R.string.register_failed), Toast.LENGTH_SHORT)
+                    Toast.makeText(this, viewModel.errorResponse, Toast.LENGTH_SHORT)
                         .show()
                     viewModel.resetRegisterStatus()
                 }
@@ -43,7 +49,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        setupButton()
+        viewModel.isLoading.observe(this){
+            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
     }
 
     private fun setupButton(){
