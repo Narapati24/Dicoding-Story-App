@@ -11,15 +11,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.dicodingstoryapp.R
+import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
+import com.dicoding.dicodingstoryapp.data.pref.dataStore
 import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
+import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
-    private val viewModel: LoginViewModel by lazy {
-        ViewModelProvider(this)[LoginViewModel::class.java]
-    }
+    private lateinit var viewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupView(){
+        val pref = UserPreferences.getInstance(application.dataStore)
+        viewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(LoginViewModel::class.java)
+
         viewModel.loginSuccess.observe(this){ success ->
             when (success) {
                 true -> {
