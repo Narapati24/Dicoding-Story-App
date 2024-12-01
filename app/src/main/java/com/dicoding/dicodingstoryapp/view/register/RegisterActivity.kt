@@ -23,11 +23,23 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.registerSuccess.observe(this){ success ->
-            if (success){
-                Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
-                finish()
-            } else {
-                Toast.makeText(this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show()
+            when (success) {
+                true -> {
+                    Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT)
+                        .show()
+                    finish()
+                    viewModel.resetRegisterStatus()
+                }
+
+                false -> {
+                    Toast.makeText(this, getString(R.string.register_failed), Toast.LENGTH_SHORT)
+                        .show()
+                    viewModel.resetRegisterStatus()
+                }
+
+                null -> {
+                    //
+                }
             }
         }
 

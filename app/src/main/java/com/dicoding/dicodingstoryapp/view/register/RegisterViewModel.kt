@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class RegisterViewModel: ViewModel() {
-    private val _registerSuccess = MutableLiveData<Boolean>()
-    val registerSuccess: LiveData<Boolean> = _registerSuccess
+    private val _registerSuccess = MutableLiveData<Boolean?>()
+    val registerSuccess: LiveData<Boolean?> = _registerSuccess
 
     suspend fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
@@ -29,5 +29,9 @@ class RegisterViewModel: ViewModel() {
                 _registerSuccess.postValue(false)
             }
         }
+    }
+
+    fun resetRegisterStatus(){
+        _registerSuccess.value = null
     }
 }
