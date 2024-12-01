@@ -10,9 +10,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.dicoding.dicodingstoryapp.MainActivity
 import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
+import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
 import kotlinx.coroutines.launch
 
@@ -37,7 +37,8 @@ class LoginActivity : AppCompatActivity() {
                 true -> {
                     Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT)
                         .show()
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
                     viewModel.resetLoginStatus()
                 }
