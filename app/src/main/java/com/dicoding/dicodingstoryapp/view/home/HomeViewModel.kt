@@ -13,7 +13,7 @@ class HomeViewModel(private val storyRepository: StoryRepository): ViewModel() {
     private var _stories = MutableLiveData<Result<List<ListStoryItem>>>()
     val stories: LiveData<Result<List<ListStoryItem>>> = _stories
 
-    init {
+    fun getStories() {
         viewModelScope.launch {
             _stories.value = storyRepository.getStories()
         }

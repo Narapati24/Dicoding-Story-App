@@ -36,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
             this,
             ViewModelFactory2.getInstance(this)
         )[HomeViewModel::class.java]
+        viewModel.getStories()
 
         binding.rvStory.setHasFixedSize(true)
         viewModel.stories.observe(this){ result ->

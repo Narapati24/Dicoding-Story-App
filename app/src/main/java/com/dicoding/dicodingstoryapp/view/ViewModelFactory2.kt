@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.dicodingstoryapp.data.StoryRepository
 import com.dicoding.dicodingstoryapp.data.di.Injection
 import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
+import com.dicoding.dicodingstoryapp.view.crud.AddStoryViewModel
 import com.dicoding.dicodingstoryapp.view.detail.DetailViewModel
 import com.dicoding.dicodingstoryapp.view.home.HomeViewModel
 import com.dicoding.dicodingstoryapp.view.login.LoginViewModel
@@ -20,6 +21,8 @@ class ViewModelFactory2 private constructor(
             return HomeViewModel(storyRepository) as T
         } else if (modelClass.isAssignableFrom(DetailViewModel::class.java)){
             return DetailViewModel(storyRepository) as T
+        } else if (modelClass.isAssignableFrom(AddStoryViewModel::class.java)){
+            return AddStoryViewModel(storyRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

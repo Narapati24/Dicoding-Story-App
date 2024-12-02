@@ -3,10 +3,14 @@ package com.dicoding.dicodingstoryapp.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
+import com.dicoding.dicodingstoryapp.data.response.AddStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.DetailStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
 import com.dicoding.dicodingstoryapp.data.response.StoryResponse
 import com.dicoding.dicodingstoryapp.data.retrofit.ApiService
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class StoryRepository private constructor(
     private val apiService: ApiService,
@@ -37,6 +41,20 @@ class StoryRepository private constructor(
             }
         } catch (e: Exception) {
             Result.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    suspend fun addStory(description: RequestBody, photo: MultipartBody.Part): Result<AddStoryResponse> {
+        return try {
+            val response = apiService.addStory(description, photo)
+            if (!response.error!!) {
+                Result.Success(response)
+            } else {
+                Result.Error(response.message ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Unknown error")
+
         }
     }
 
