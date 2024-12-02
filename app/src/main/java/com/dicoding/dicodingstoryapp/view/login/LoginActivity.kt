@@ -17,6 +17,8 @@ import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -34,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupView(){
         val pref = UserPreferences.getInstance(application.dataStore)
-        viewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory.getInstanceForLogin(pref))[LoginViewModel::class.java]
 
         viewModel.loginSuccess.observe(this){ success ->
             when (success) {

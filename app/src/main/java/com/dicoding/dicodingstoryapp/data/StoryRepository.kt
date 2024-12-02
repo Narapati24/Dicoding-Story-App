@@ -15,7 +15,7 @@ class StoryRepository private constructor(
 
     suspend fun getStories(): Result<List<ListStoryItem>> {
         return try {
-            val response = apiService.getStories("Bearer ${prev.getTokenUser()}")
+            val response = apiService.getStories()
             if (!response.error!!) {
                 Result.Success(response.listStory)
             } else {
