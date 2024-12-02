@@ -1,6 +1,7 @@
 package com.dicoding.dicodingstoryapp.view.home
 
 import android.app.Application
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -22,6 +23,7 @@ import com.dicoding.dicodingstoryapp.databinding.ActivityHomeBinding
 import com.dicoding.dicodingstoryapp.helper.ListStoryAdapter
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory2
+import com.dicoding.dicodingstoryapp.view.crud.AddStoryActivity
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -49,6 +51,11 @@ class HomeActivity : AppCompatActivity() {
                     //
                 }
             }
+        }
+
+        binding.faUpload.setOnClickListener {
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
