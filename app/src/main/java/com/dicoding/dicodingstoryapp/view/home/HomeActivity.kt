@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory2.getInstanceForHome(this)
+            ViewModelFactory2.getInstance(this)
         )[HomeViewModel::class.java]
 
         binding.rvStory.setHasFixedSize(true)

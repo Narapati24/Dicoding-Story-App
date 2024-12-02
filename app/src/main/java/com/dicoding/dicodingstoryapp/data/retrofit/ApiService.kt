@@ -1,5 +1,6 @@
 package com.dicoding.dicodingstoryapp.data.retrofit
 
+import com.dicoding.dicodingstoryapp.data.response.DetailStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.LoginResponse
 import com.dicoding.dicodingstoryapp.data.response.RegisterResponse
 import com.dicoding.dicodingstoryapp.data.response.StoryResponse
@@ -9,6 +10,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @FormUrlEncoded
@@ -29,4 +31,8 @@ interface ApiService {
     @GET("/v1/stories")
     suspend fun getStories(): StoryResponse
 
+    @GET("/v1/stories/{id}")
+    suspend fun getDetailStory(
+        @Path("id") id: String
+    ): DetailStoryResponse
 }
