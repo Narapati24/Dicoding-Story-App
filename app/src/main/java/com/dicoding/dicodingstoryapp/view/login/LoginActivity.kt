@@ -1,7 +1,9 @@
 package com.dicoding.dicodingstoryapp.view.login
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -14,6 +16,7 @@ import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
 import com.dicoding.dicodingstoryapp.data.pref.dataStore
 import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
+import com.dicoding.dicodingstoryapp.view.LoginViewModelFactory
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
@@ -32,11 +35,13 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        playAnimation()
     }
 
     private fun setupView(){
-        val pref = UserPreferences.getInstance(application.dataStore)
-        viewModel = ViewModelProvider(this, ViewModelFactory.getInstanceForLogin(pref))[LoginViewModel::class.java]
+        viewModel = ViewModelProvider(this, LoginViewModelFactory.getInstance(
+            this
+        ))[LoginViewModel::class.java]
 
         viewModel.loginSuccess.observe(this){ success ->
             when (success) {
@@ -74,5 +79,13 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun playAnimation(){
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 }

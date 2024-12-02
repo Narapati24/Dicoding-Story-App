@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide
 import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.Result
 import com.dicoding.dicodingstoryapp.databinding.ActivityDetailBinding
-import com.dicoding.dicodingstoryapp.view.ViewModelFactory2
+import com.dicoding.dicodingstoryapp.helper.getCityName
+import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -26,7 +27,7 @@ class DetailActivity : AppCompatActivity() {
         Log.d("id", id.toString())
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory2.getInstance(this)
+            ViewModelFactory.getInstance(this)
         )[DetailViewModel::class.java]
         viewModel.getStory(id!!)
 
@@ -49,6 +50,7 @@ class DetailActivity : AppCompatActivity() {
                         .into(binding.ivDetailPhoto)
                     binding.tvDetailName.text = story.story?.name
                     binding.tvDetailDescription.text = story.story?.description
+                    binding.tvCity.text = getCityName(story.story?.lat, story.story?.lon, this)
                 }
             }
         }

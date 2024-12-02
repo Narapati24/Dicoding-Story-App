@@ -1,5 +1,6 @@
 package com.dicoding.dicodingstoryapp.helper
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.dicodingstoryapp.R
@@ -40,19 +43,19 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>): RecyclerView
         holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
             intentDetail.putExtra(DetailActivity.ID, id)
-            holder.itemView.context.startActivity(intentDetail)
+
+            val optionsCompat: ActivityOptionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    holder.itemView.context
+                            as Activity,
+                    Pair(holder.ivPhoto, "image"),
+                    Pair(holder.tvName, "name"),
+                    Pair(holder.tvCity, "location")
+                )
+
+            holder.itemView.context.startActivity(intentDetail, optionsCompat.toBundle())
         }
     }
 
     override fun getItemCount(): Int = listStory.size
-
-    private fun getCityName(lat: Double?, long: Double?, context: Context): String{
-        val cityName: String?
-        val geocoder = Geocoder(context, Locale.getDefault())
-        if (lat == null || long == null) return ""
-        val adress = geocoder.getFromLocation(lat, long, 1)
-
-        cityName = adress?.get(0)?.locality
-        return cityName ?: ""
-    }
 }

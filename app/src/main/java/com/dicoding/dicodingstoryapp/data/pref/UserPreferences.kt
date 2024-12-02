@@ -26,6 +26,12 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
+    suspend fun deleteTokenUser(){
+        dataStore.edit { preferences ->
+            preferences.remove(TOKEN_KEY)
+        }
+    }
+
     companion object{
         @Volatile
         private var INSTANCE: UserPreferences? = null

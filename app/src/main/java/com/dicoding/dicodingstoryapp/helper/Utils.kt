@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -21,6 +22,16 @@ import java.util.Locale
 private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 private const val MAXIMAL_SIZE = 1000000
+
+fun getCityName(lat: Double?, long: Double?, context: Context): String{
+    val cityName: String?
+    val geocoder = Geocoder(context, Locale.getDefault())
+    if (lat == null || long == null) return ""
+    val adress = geocoder.getFromLocation(lat, long, 1)
+
+    cityName = adress?.get(0)?.locality
+    return cityName ?: ""
+}
 
 fun getImageUri(context: Context): Uri{
     var uri: Uri? = null

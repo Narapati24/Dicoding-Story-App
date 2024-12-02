@@ -18,7 +18,7 @@ import com.dicoding.dicodingstoryapp.databinding.ActivityAddStoryBinding
 import com.dicoding.dicodingstoryapp.helper.getImageUri
 import com.dicoding.dicodingstoryapp.helper.reduceFileImage
 import com.dicoding.dicodingstoryapp.helper.uriToFile
-import com.dicoding.dicodingstoryapp.view.ViewModelFactory2
+import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -36,7 +36,7 @@ class AddStoryActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory2.getInstance(this)
+            ViewModelFactory.getInstance(this)
         )[AddStoryViewModel::class.java]
 
         viewModel.status.observe(this) { result ->

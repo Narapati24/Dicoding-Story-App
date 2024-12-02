@@ -7,7 +7,9 @@ import com.dicoding.dicodingstoryapp.data.response.AddStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.DetailStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
 import com.dicoding.dicodingstoryapp.data.response.StoryResponse
+import com.dicoding.dicodingstoryapp.data.retrofit.ApiConfig
 import com.dicoding.dicodingstoryapp.data.retrofit.ApiService
+import kotlinx.coroutines.flow.first
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File

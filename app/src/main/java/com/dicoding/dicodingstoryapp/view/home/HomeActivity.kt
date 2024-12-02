@@ -1,14 +1,18 @@
 package com.dicoding.dicodingstoryapp.view.home
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.Result
@@ -22,8 +26,9 @@ import com.dicoding.dicodingstoryapp.data.retrofit.ApiService
 import com.dicoding.dicodingstoryapp.databinding.ActivityHomeBinding
 import com.dicoding.dicodingstoryapp.helper.ListStoryAdapter
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory
-import com.dicoding.dicodingstoryapp.view.ViewModelFactory2
 import com.dicoding.dicodingstoryapp.view.crud.AddStoryActivity
+import com.dicoding.dicodingstoryapp.view.login.LoginActivity
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -34,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory2.getInstance(this)
+            ViewModelFactory.getInstance(this)
         )[HomeViewModel::class.java]
         viewModel.getStories()
 
@@ -58,11 +63,30 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent)
         }
+
+        binding.faLogout.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.logout()
+                val intent = Intent(this@HomeActivity, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
+        }
+        playAnimation()
     }
 
     private fun showRecyclerList(stories: List<ListStoryItem>) {
         binding.rvStory.layoutManager = LinearLayoutManager(this)
         val listStoryAdapter = ListStoryAdapter(stories)
         binding.rvStory.adapter = listStoryAdapter
+    }
+
+    private fun playAnimation(){
+        val rv = ObjectAnimator.ofFloat(binding.rvStory, View.ALPHA, 1f).setDuration(500)
+
+        AnimatorSet().apply {
+            playSequentially(rv)
+            start()
+        }
     }
 }

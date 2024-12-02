@@ -10,12 +10,16 @@ import kotlinx.coroutines.runBlocking
 
 object Injection {
     fun provideRepository(context: Context): StoryRepository{
-        val pref = UserPreferences.getInstance(context.dataStore)
+        val pref = providePref(context)
         val user = runBlocking { pref.getTokenUser().first() }
         if (user.isNullOrEmpty()){
             throw Exception("User not found")
         }
         val apiService = ApiConfig.getApiService(user)
         return StoryRepository.getInstance(apiService, pref)
+    }
+
+    fun providePref(context: Context): UserPreferences{
+        return UserPreferences.getInstance(context.dataStore)
     }
 }
