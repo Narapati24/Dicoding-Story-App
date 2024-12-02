@@ -2,27 +2,16 @@ package com.dicoding.dicodingstoryapp.view.home
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.Result
-import com.dicoding.dicodingstoryapp.data.StoryRepository
-import com.dicoding.dicodingstoryapp.data.di.Injection
-import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
-import com.dicoding.dicodingstoryapp.data.pref.dataStore
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
-import com.dicoding.dicodingstoryapp.data.retrofit.ApiConfig
-import com.dicoding.dicodingstoryapp.data.retrofit.ApiService
 import com.dicoding.dicodingstoryapp.databinding.ActivityHomeBinding
 import com.dicoding.dicodingstoryapp.helper.ListStoryAdapter
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory
@@ -41,17 +30,19 @@ class HomeActivity : AppCompatActivity() {
             this,
             ViewModelFactory.getInstance(this)
         )[HomeViewModel::class.java]
+        showLoading()
         viewModel.getStories()
 
         binding.rvStory.setHasFixedSize(true)
         viewModel.stories.observe(this){ result ->
+            hideLoading()
             when (result) {
                 is Result.Success -> {
                     val stories = result.data
                     showRecyclerList(stories)
                 }
                 is Result.Error -> {
-                    //
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
                 is Result.Loading -> {
                     //
@@ -88,5 +79,13 @@ class HomeActivity : AppCompatActivity() {
             playSequentially(rv)
             start()
         }
+    }
+
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading(){
+        binding.progressBar.visibility = View.GONE
     }
 }

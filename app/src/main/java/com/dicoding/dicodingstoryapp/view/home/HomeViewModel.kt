@@ -1,6 +1,5 @@
 package com.dicoding.dicodingstoryapp.view.home
 
-import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import com.dicoding.dicodingstoryapp.data.Result
 import com.dicoding.dicodingstoryapp.data.StoryRepository
 import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
-import com.dicoding.dicodingstoryapp.view.login.LoginActivity
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val pref: UserPreferences, private val storyRepository: StoryRepository): ViewModel() {

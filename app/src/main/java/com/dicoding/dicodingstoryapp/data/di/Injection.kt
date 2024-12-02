@@ -16,7 +16,7 @@ object Injection {
             throw Exception("User not found")
         }
         val apiService = ApiConfig.getApiService(user)
-        return StoryRepository.getInstance(apiService, pref)
+        return StoryRepository.getInstance(apiService)
     }
 
     fun providePref(context: Context): UserPreferences{

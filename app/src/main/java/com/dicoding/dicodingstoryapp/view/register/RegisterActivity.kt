@@ -3,10 +3,7 @@ package com.dicoding.dicodingstoryapp.view.register
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.dicodingstoryapp.R
@@ -29,6 +26,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupView(){
         viewModel.registerSuccess.observe(this){ success ->
+            hideLoading()
             when (success) {
                 true -> {
                     Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT)
@@ -48,14 +46,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
-
-        viewModel.isLoading.observe(this){
-            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        }
     }
 
     private fun setupButton(){
         binding.signupButton.setOnClickListener {
+            showLoading()
             lifecycleScope.launch {
                 viewModel.register(
                     binding.edRegisterName.text.toString(),
@@ -64,5 +59,15 @@ class RegisterActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.signupButton.isEnabled = false
+    }
+
+    private fun hideLoading(){
+        binding.progressBar.visibility = View.GONE
+        binding.signupButton.isEnabled = true
     }
 }

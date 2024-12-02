@@ -11,7 +11,6 @@ import com.dicoding.dicodingstoryapp.data.response.AddStoryResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.File
 
 class AddStoryViewModel(private val storyRepository: StoryRepository): ViewModel() {
     var currentImageUri: Uri? = null

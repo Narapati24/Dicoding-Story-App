@@ -3,13 +3,9 @@ package com.dicoding.dicodingstoryapp.view.splash
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
 import com.dicoding.dicodingstoryapp.data.pref.dataStore
 import com.dicoding.dicodingstoryapp.databinding.ActivitySplashBinding

@@ -1,9 +1,7 @@
 package com.dicoding.dicodingstoryapp.helper
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
 import com.dicoding.dicodingstoryapp.view.detail.DetailActivity
-import java.util.Locale
 
 class ListStoryAdapter(private val listStory: List<ListStoryItem>): RecyclerView.Adapter<ListStoryAdapter.ListViewHolder>() {
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,12 +25,12 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>): RecyclerView
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ListStoryAdapter.ListViewHolder {
+    ): ListViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_row_story, parent, false)
         return ListViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ListStoryAdapter.ListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val (photoUrl, createdAt, name, description, lon, id, lat) = listStory[position]
         Glide.with(holder.itemView.context)
             .load(photoUrl)

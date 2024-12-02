@@ -1,24 +1,15 @@
 package com.dicoding.dicodingstoryapp.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
 import com.dicoding.dicodingstoryapp.data.response.AddStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.DetailStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
-import com.dicoding.dicodingstoryapp.data.response.StoryResponse
-import com.dicoding.dicodingstoryapp.data.retrofit.ApiConfig
 import com.dicoding.dicodingstoryapp.data.retrofit.ApiService
-import kotlinx.coroutines.flow.first
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.File
 
 class StoryRepository private constructor(
-    private val apiService: ApiService,
-    private val prev: UserPreferences
+    private val apiService: ApiService
 ){
-    private val result = MediatorLiveData<Result<List<StoryResponse>>>()
 
     suspend fun getStories(): Result<List<ListStoryItem>> {
         return try {
@@ -65,13 +56,11 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
 
         fun getInstance(
-            apiService: ApiService,
-            prev: UserPreferences
+            apiService: ApiService
         ): StoryRepository =
             instance ?: synchronized(this){
                 instance ?: StoryRepository(
-                    apiService,
-                    prev
+                    apiService
                 )
             }.also { instance = it }
     }

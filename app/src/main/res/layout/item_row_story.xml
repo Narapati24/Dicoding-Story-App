@@ -33,6 +33,7 @@
             android:id="@+id/iv_item_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/detail_image"
             android:scaleType="fitCenter"
             tools:src="@tools:sample/avatars"
             app:layout_constraintTop_toBottomOf="@id/tv_item_city"

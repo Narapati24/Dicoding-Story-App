@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.map
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
 class UserPreferences private constructor(private val dataStore: DataStore<Preferences>){
-    private val TOKEN_KEY = stringPreferencesKey("token")
+    private val tokenkey = stringPreferencesKey("token")
 
     fun getTokenUser(): Flow<String?> {
         return dataStore.data.map { preferences ->
-            preferences[TOKEN_KEY]
+            preferences[tokenkey]
         }
     }
 
     suspend fun saveTokenUser(token: String){
         dataStore.edit { preferences ->
-            preferences[TOKEN_KEY] = token
+            preferences[tokenkey] = token
         }
     }
 
     suspend fun deleteTokenUser(){
         dataStore.edit { preferences ->
-            preferences.remove(TOKEN_KEY)
+            preferences.remove(tokenkey)
         }
     }
 

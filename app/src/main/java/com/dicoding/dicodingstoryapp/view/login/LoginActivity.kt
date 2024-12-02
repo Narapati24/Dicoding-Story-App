@@ -5,23 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.dicodingstoryapp.R
-import com.dicoding.dicodingstoryapp.data.pref.UserPreferences
-import com.dicoding.dicodingstoryapp.data.pref.dataStore
 import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
 import com.dicoding.dicodingstoryapp.view.LoginViewModelFactory
-import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -44,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
         ))[LoginViewModel::class.java]
 
         viewModel.loginSuccess.observe(this){ success ->
+            hideLoading()
             when (success) {
                 true -> {
                     Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT)
@@ -71,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.edLoginEmail.text.toString()
             val password = binding.edLoginPassword.text.toString()
+            showLoading()
             lifecycleScope.launch {
                 viewModel.login(email, password)
             }
@@ -79,6 +72,16 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.loginButton.isEnabled = false
+    }
+
+    private fun hideLoading(){
+        binding.progressBar.visibility = View.GONE
+        binding.loginButton.isEnabled = true
     }
 
     private fun playAnimation(){

@@ -4,15 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.view.View
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.Result
 import com.dicoding.dicodingstoryapp.databinding.ActivityAddStoryBinding
 import com.dicoding.dicodingstoryapp.helper.getImageUri
@@ -40,9 +38,10 @@ class AddStoryActivity : AppCompatActivity() {
         )[AddStoryViewModel::class.java]
 
         viewModel.status.observe(this) { result ->
+            hideLoading()
             when (result) {
                 is Result.Error -> {
-                    //
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
                 Result.Loading -> {
                     //
@@ -70,6 +69,7 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         binding.buttonAdd.setOnClickListener {
+            showLoading()
             viewModel.currentImageUri?.let { uri->
                 val imageFile = uriToFile(uri, this).reduceFileImage()
                 Log.d("Image File", "showImage: ${imageFile.path}")
@@ -118,5 +118,19 @@ class AddStoryActivity : AppCompatActivity() {
             Log.d("Image URI", "showImage: $it")
             binding.ivPreview.setImageURI(it)
         }
+    }
+
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.buttonGallery.isEnabled = false
+        binding.buttonAdd.isEnabled = false
+        binding.buttonCamera.isEnabled = false
+    }
+
+    private fun hideLoading(){
+        binding.progressBar.visibility = View.GONE
+        binding.buttonAdd.isEnabled = true
+        binding.buttonGallery.isEnabled = true
+        binding.buttonCamera.isEnabled = true
     }
 }

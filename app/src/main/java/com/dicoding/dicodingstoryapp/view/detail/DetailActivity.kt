@@ -3,13 +3,9 @@ package com.dicoding.dicodingstoryapp.view.detail
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.Result
 import com.dicoding.dicodingstoryapp.databinding.ActivityDetailBinding
 import com.dicoding.dicodingstoryapp.helper.getCityName
@@ -38,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
         viewModel.story.observe(this){ result ->
             when(result){
                 is Result.Error -> {
-                    //
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
                 Result.Loading -> {
                     //

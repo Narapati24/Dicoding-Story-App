@@ -11,6 +11,13 @@
     <string name="name">Nama</string>
     <string name="signup">Daftar</string>
     <string name="register_success">Akun berhasil didaftarkan</string>
-    <string name="register_failed">Akun gagal didaftarkan</string>
     <string name="login_success">Anda berhasil login</string>
+    <string name="preview_image">Preview Image</string>
+    <string name="detail_image">detail_image</string>
+    <string name="logout">logout</string>
+    <string name="upload">upload</string>
+    <string name="banner">banner</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description">Description</string>
 </resources>

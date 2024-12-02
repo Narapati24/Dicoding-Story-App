@@ -15,14 +15,10 @@ class LoginViewModel(private val pref: UserPreferences): ViewModel() {
     private val _loginSuccess = MutableLiveData<Boolean?>()
     val loginSuccess: LiveData<Boolean?> = _loginSuccess
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
     var errorMassage: String? = null
 
-    suspend fun login(email: String, password: String){
+    fun login(email: String, password: String){
         viewModelScope.launch {
-            _isLoading.postValue(true)
             try {
                 val apiService = ApiConfig.getApiService()
                 val successResponse = apiService.login(email, password).loginResult
@@ -32,8 +28,6 @@ class LoginViewModel(private val pref: UserPreferences): ViewModel() {
                 val jsonInString = e.response()?.errorBody()?.string()
                 errorMassage = Gson().fromJson(jsonInString, LoginResponse::class.java).message
                 _loginSuccess.postValue(false)
-            } finally {
-                _isLoading.postValue(false)
             }
         }
     }
