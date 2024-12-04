@@ -1,11 +1,13 @@
 package com.dicoding.dicodingstoryapp.view.login
 
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.dicodingstoryapp.R
@@ -13,6 +15,7 @@ import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
 import com.dicoding.dicodingstoryapp.view.LoginViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -41,9 +44,9 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT)
                         .show()
                     val intent = Intent(this, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                    startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@LoginActivity as Activity).toBundle())
                     viewModel.resetLoginStatus()
+                    finish()
                 }
 
                 false -> {
@@ -70,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.btnRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle())
         }
     }
 

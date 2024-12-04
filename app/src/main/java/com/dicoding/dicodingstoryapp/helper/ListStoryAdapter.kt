@@ -40,17 +40,7 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>): RecyclerView
         holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
             intentDetail.putExtra(DetailActivity.ID, id)
-
-            val optionsCompat: ActivityOptionsCompat =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    holder.itemView.context
-                            as Activity,
-                    Pair(holder.ivPhoto, "image"),
-                    Pair(holder.tvName, "name"),
-                    Pair(holder.tvCity, "location")
-                )
-
-            holder.itemView.context.startActivity(intentDetail, optionsCompat.toBundle())
+            holder.itemView.context.startActivity(intentDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(holder.itemView.context as Activity).toBundle())
         }
     }
 

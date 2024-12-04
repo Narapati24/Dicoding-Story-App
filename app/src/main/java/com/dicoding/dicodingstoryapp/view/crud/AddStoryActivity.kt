@@ -1,5 +1,6 @@
 package com.dicoding.dicodingstoryapp.view.crud
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.dicodingstoryapp.data.Result
@@ -49,11 +51,19 @@ class AddStoryActivity : AppCompatActivity() {
                 is Result.Success -> {
                     val intent = Intent(this, HomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                    startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@AddStoryActivity as Activity).toBundle())
                 }
             }
         }
 
+        binding.buttonAdd.isEnabled = false
+
+        viewModel.currentImageUri.observe(this) { uri ->
+            if (uri != null) {
+                binding.buttonAdd.isEnabled = true
+                showImage()
+            }
+        }
         showImage()
         setupAction()
     }
@@ -64,17 +74,17 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         binding.buttonCamera.setOnClickListener {
-            viewModel.currentImageUri = getImageUri(this)
-            launcherIntentCamera.launch(viewModel.currentImageUri!!)
+            viewModel.setCurrentImageUri(getImageUri(this))
+            launcherIntentCamera.launch(viewModel.currentImageUri.value!!)
         }
 
         binding.buttonAdd.setOnClickListener {
             showLoading()
-            viewModel.currentImageUri?.let { uri->
+            viewModel.currentImageUri.value?.let { uri->
                 val imageFile = uriToFile(uri, this).reduceFileImage()
                 Log.d("Image File", "showImage: ${imageFile.path}")
                 val description = binding.edAddDescription.text.toString()
-                
+
                 val requestbody = description.toRequestBody("text/plain".toMediaType())
                 val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
                 val multipartBody = MultipartBody.Part.createFormData(
@@ -98,7 +108,7 @@ class AddStoryActivity : AppCompatActivity() {
         if (isSuccess) {
             showImage()
         } else {
-            viewModel.currentImageUri = null
+            viewModel.setCurrentImageUri(null)
         }
     }
 
@@ -106,7 +116,7 @@ class AddStoryActivity : AppCompatActivity() {
         ActivityResultContracts.PickVisualMedia()
     ){ uri: Uri? ->
         if (uri != null){
-            viewModel.currentImageUri = uri
+            viewModel.setCurrentImageUri(uri)
             showImage()
         } else{
             Log.d("Photo Picker", "No media selected")
@@ -114,7 +124,7 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun showImage() {
-        viewModel.currentImageUri?.let {
+        viewModel.currentImageUri.value?.let {
             Log.d("Image URI", "showImage: $it")
             binding.ivPreview.setImageURI(it)
         }

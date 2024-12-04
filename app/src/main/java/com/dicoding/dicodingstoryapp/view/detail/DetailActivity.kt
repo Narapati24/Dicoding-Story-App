@@ -20,7 +20,6 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val id = intent.getStringExtra(ID)
-        Log.d("id", id.toString())
         viewModel = ViewModelProvider(
             this,
             ViewModelFactory.getInstance(this)

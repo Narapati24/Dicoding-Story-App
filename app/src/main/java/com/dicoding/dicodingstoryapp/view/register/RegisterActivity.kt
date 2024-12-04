@@ -1,5 +1,6 @@
 package com.dicoding.dicodingstoryapp.view.register
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -22,6 +23,7 @@ class RegisterActivity : AppCompatActivity() {
 
         setupView()
         setupButton()
+        playAnimation()
     }
 
     private fun setupView(){
@@ -59,6 +61,14 @@ class RegisterActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun playAnimation(){
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 
     private fun showLoading() {

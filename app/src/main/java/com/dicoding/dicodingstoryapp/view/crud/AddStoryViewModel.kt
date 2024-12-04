@@ -13,7 +13,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class AddStoryViewModel(private val storyRepository: StoryRepository): ViewModel() {
-    var currentImageUri: Uri? = null
+    private val _currentImageUri = MutableLiveData<Uri?>()
+    val currentImageUri: LiveData<Uri?> get() = _currentImageUri
+
+    fun setCurrentImageUri(uri: Uri?) {
+        _currentImageUri.value = uri
+    }
 
     private var _status = MutableLiveData<Result<AddStoryResponse>>()
     val status: LiveData<Result<AddStoryResponse>> = _status
