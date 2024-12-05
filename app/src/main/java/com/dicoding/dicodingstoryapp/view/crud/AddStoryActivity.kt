@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.Result
 import com.dicoding.dicodingstoryapp.databinding.ActivityAddStoryBinding
 import com.dicoding.dicodingstoryapp.helper.getImageUri
@@ -58,12 +59,6 @@ class AddStoryActivity : AppCompatActivity() {
 
         binding.buttonAdd.isEnabled = false
 
-        viewModel.currentImageUri.observe(this) { uri ->
-            if (uri != null) {
-                binding.buttonAdd.isEnabled = true
-                showImage()
-            }
-        }
         showImage()
         setupAction()
     }
@@ -107,6 +102,7 @@ class AddStoryActivity : AppCompatActivity() {
     ) { isSuccess ->
         if (isSuccess) {
             showImage()
+            binding.buttonAdd.isEnabled = true
         } else {
             viewModel.setCurrentImageUri(null)
         }
@@ -118,6 +114,7 @@ class AddStoryActivity : AppCompatActivity() {
         if (uri != null){
             viewModel.setCurrentImageUri(uri)
             showImage()
+            binding.buttonAdd.isEnabled = true
         } else{
             Log.d("Photo Picker", "No media selected")
         }
@@ -125,8 +122,14 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun showImage() {
         viewModel.currentImageUri.value?.let {
-            Log.d("Image URI", "showImage: $it")
-            binding.ivPreview.setImageURI(it)
+            if (it.path.isNullOrEmpty()) {
+                binding.ivPreview.setImageDrawable(getDrawable(R.drawable.ic_image_24))
+                return
+            } else {
+                Log.d("Image URI", "showImage: $it")
+                binding.ivPreview.setImageURI(it)
+                return
+            }
         }
     }
 
