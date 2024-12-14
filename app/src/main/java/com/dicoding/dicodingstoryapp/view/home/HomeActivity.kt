@@ -19,6 +19,7 @@ import com.dicoding.dicodingstoryapp.helper.ListStoryAdapter
 import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.crud.AddStoryActivity
 import com.dicoding.dicodingstoryapp.view.login.LoginActivity
+import com.dicoding.dicodingstoryapp.view.maps.MapsActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -65,6 +66,11 @@ class HomeActivity : AppCompatActivity() {
                 delay(1000)
                 finish()
             }
+        }
+
+        binding.faMaps.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle())
         }
     }
 

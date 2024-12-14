@@ -20,4 +20,6 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="description">Description</string>
+    <string name="icon_map">Icon Map</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
