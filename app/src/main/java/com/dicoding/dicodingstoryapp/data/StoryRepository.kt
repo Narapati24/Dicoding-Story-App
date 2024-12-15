@@ -12,7 +12,7 @@ import com.dicoding.dicodingstoryapp.data.retrofit.ApiService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class StoryRepository private constructor(
+open class StoryRepository private constructor(
     private val apiService: ApiService
 ){
     suspend fun getStoriesWithLocation(): Result<List<ListStoryItem>> {
