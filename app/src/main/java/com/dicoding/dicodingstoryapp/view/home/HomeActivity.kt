@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory.getInstance(this)
+            ViewModelFactory.getInstance(application)
         )[HomeViewModel::class.java]
         viewModel.getStories()
 

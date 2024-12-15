@@ -22,7 +22,7 @@ class DetailActivity : AppCompatActivity() {
         val id = intent.getStringExtra(ID)
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory.getInstance(this)
+            ViewModelFactory.getInstance(application)
         )[DetailViewModel::class.java]
         viewModel.getStory(id!!)
 

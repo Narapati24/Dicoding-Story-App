@@ -29,7 +29,7 @@ fun getCityName(lat: Double?, long: Double?, context: Context): String{
     if (lat == null || long == null) return ""
     val adress = geocoder.getFromLocation(lat, long, 1)
 
-    cityName = adress?.get(0)?.locality
+    cityName = if (adress?.isEmpty() == true) "" else adress?.get(0)?.locality
     return cityName ?: ""
 }
 

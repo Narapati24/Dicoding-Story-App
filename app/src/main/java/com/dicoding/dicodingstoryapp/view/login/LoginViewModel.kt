@@ -1,5 +1,6 @@
 package com.dicoding.dicodingstoryapp.view.login
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class LoginViewModel(private val pref: UserPreferences): ViewModel() {
+class LoginViewModel(private val mApplication: Application, private val pref: UserPreferences): ViewModel() {
     private val _loginSuccess = MutableLiveData<Boolean?>()
     val loginSuccess: LiveData<Boolean?> = _loginSuccess
 

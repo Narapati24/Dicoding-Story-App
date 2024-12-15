@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.databinding.ActivityLoginBinding
-import com.dicoding.dicodingstoryapp.view.LoginViewModelFactory
+import com.dicoding.dicodingstoryapp.view.ViewModelFactory
 import com.dicoding.dicodingstoryapp.view.home.HomeActivity
 import com.dicoding.dicodingstoryapp.view.register.RegisterActivity
 import kotlinx.coroutines.delay
@@ -33,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupView(){
-        viewModel = ViewModelProvider(this, LoginViewModelFactory.getInstance(
-            this
+        viewModel = ViewModelProvider(this, ViewModelFactory.getInstance(
+            application
         ))[LoginViewModel::class.java]
 
         viewModel.loginSuccess.observe(this){ success ->

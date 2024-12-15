@@ -10,6 +10,18 @@ import okhttp3.RequestBody
 class StoryRepository private constructor(
     private val apiService: ApiService
 ){
+    suspend fun getStoriesWithLocation(): Result<List<ListStoryItem>> {
+        return try {
+            val response = apiService.getStoriesWithLocation()
+            if (!response.error!!) {
+                Result.Success(response.listStory)
+            } else {
+                Result.Error(response.message ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Unknown error")
+        }
+    }
 
     suspend fun getStories(): Result<List<ListStoryItem>> {
         return try {

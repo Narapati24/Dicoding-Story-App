@@ -37,7 +37,7 @@ class AddStoryActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory.getInstance(this)
+            ViewModelFactory.getInstance(application)
         )[AddStoryViewModel::class.java]
 
         viewModel.status.observe(this) { result ->

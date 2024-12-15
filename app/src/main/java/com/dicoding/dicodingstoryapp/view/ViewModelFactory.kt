@@ -1,5 +1,6 @@
 package com.dicoding.dicodingstoryapp.view
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,21 +11,23 @@ import com.dicoding.dicodingstoryapp.view.crud.AddStoryViewModel
 import com.dicoding.dicodingstoryapp.view.detail.DetailViewModel
 import com.dicoding.dicodingstoryapp.view.home.HomeViewModel
 import com.dicoding.dicodingstoryapp.view.login.LoginViewModel
+import com.dicoding.dicodingstoryapp.view.maps.MapsViewModel
 
 class ViewModelFactory private constructor(
-    private val pref: UserPreferences,
-    private val storyRepository: StoryRepository
+    private val mApplicantion: Application
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)){
-            return LoginViewModel(pref) as T
+            return LoginViewModel(mApplicantion, Injection.providePref(mApplicantion)) as T
         } else if (modelClass.isAssignableFrom(HomeViewModel::class.java)){
-            return HomeViewModel(pref, storyRepository) as T
+            return HomeViewModel(mApplicantion, Injection.providePref(mApplicantion), Injection.provideRepository(mApplicantion)) as T
         } else if (modelClass.isAssignableFrom(DetailViewModel::class.java)){
-            return DetailViewModel(storyRepository) as T
+            return DetailViewModel(mApplicantion, Injection.provideRepository(mApplicantion)) as T
         } else if (modelClass.isAssignableFrom(AddStoryViewModel::class.java)){
-            return AddStoryViewModel(storyRepository) as T
+            return AddStoryViewModel(mApplicantion, Injection.provideRepository(mApplicantion)) as T
+        } else if (modelClass.isAssignableFrom(MapsViewModel::class.java)){
+            return MapsViewModel(mApplicantion, Injection.provideRepository(mApplicantion)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
@@ -33,11 +36,10 @@ class ViewModelFactory private constructor(
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(context: Context): ViewModelFactory =
+        fun getInstance(mApplicantion: Application): ViewModelFactory =
             instance ?: synchronized(this){
                 instance ?: ViewModelFactory(
-                    pref =  Injection.providePref(context),
-                    storyRepository = Injection.provideRepository(context)
+                    mApplicantion = mApplicantion
                 )
             }.also { instance = it }
     }
