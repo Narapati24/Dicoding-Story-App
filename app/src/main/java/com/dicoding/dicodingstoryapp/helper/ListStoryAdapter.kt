@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.dicodingstoryapp.R
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
 import com.dicoding.dicodingstoryapp.view.detail.DetailActivity
 
-class ListStoryAdapter(private val listStory: List<ListStoryItem>): RecyclerView.Adapter<ListStoryAdapter.ListViewHolder>() {
+class ListStoryAdapter: PagingDataAdapter<ListStoryItem, ListStoryAdapter.ListViewHolder>(
+    DIFF_CALLBACK) {
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivPhoto: ImageView = itemView.findViewById(R.id.iv_item_photo)
         val tvName: TextView = itemView.findViewById(R.id.tv_item_name)
@@ -31,18 +34,31 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>): RecyclerView
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val (photoUrl, createdAt, name, description, lon, id, lat) = listStory[position]
+        val data = getItem(position)
         Glide.with(holder.itemView.context)
-            .load(photoUrl)
+            .load(data?.photoUrl)
             .into(holder.ivPhoto)
-        holder.tvName.text = name
-        holder.tvCity.text = getCityName(lat, lon, holder.itemView.context)
+        holder.tvName.text = data?.name
+        holder.tvCity.text = getCityName(data?.lat, data?.lon, holder.itemView.context)
         holder.itemView.setOnClickListener {
             val intentDetail = Intent(holder.itemView.context, DetailActivity::class.java)
-            intentDetail.putExtra(DetailActivity.ID, id)
+            intentDetail.putExtra(DetailActivity.ID, data?.id)
             holder.itemView.context.startActivity(intentDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(holder.itemView.context as Activity).toBundle())
         }
     }
 
-    override fun getItemCount(): Int = listStory.size
+    companion object{
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: ListStoryItem,
+                newItem: ListStoryItem
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
 }

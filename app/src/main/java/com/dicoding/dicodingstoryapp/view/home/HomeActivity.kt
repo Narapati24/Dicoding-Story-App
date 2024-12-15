@@ -1,18 +1,15 @@
 package com.dicoding.dicodingstoryapp.view.home
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.dicodingstoryapp.data.Result
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
 import com.dicoding.dicodingstoryapp.databinding.ActivityHomeBinding
 import com.dicoding.dicodingstoryapp.helper.ListStoryAdapter
@@ -34,24 +31,9 @@ class HomeActivity : AppCompatActivity() {
             this,
             ViewModelFactory.getInstance(application)
         )[HomeViewModel::class.java]
-        viewModel.getStories()
 
         binding.rvStory.setHasFixedSize(true)
-        viewModel.stories.observe(this){ result ->
-            hideLoading()
-            when (result) {
-                is Result.Success -> {
-                    val stories = result.data
-                    showRecyclerList(stories)
-                }
-                is Result.Error -> {
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-                }
-                is Result.Loading -> {
-                    //
-                }
-            }
-        }
+        showRecyclerList()
 
         binding.faUpload.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
@@ -74,10 +56,13 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showRecyclerList(stories: List<ListStoryItem>) {
+    private fun showRecyclerList() {
         binding.rvStory.layoutManager = LinearLayoutManager(this)
-        val listStoryAdapter = ListStoryAdapter(stories)
+        val listStoryAdapter = ListStoryAdapter()
         binding.rvStory.adapter = listStoryAdapter
+        viewModel.stories.observe(this){
+            listStoryAdapter.submitData(lifecycle, it)
+        }
     }
 
     private fun showLoading() {

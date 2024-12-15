@@ -1,5 +1,10 @@
 package com.dicoding.dicodingstoryapp.data
 
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.dicoding.dicodingstoryapp.data.response.AddStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.DetailStoryResponse
 import com.dicoding.dicodingstoryapp.data.response.ListStoryItem
@@ -23,17 +28,28 @@ class StoryRepository private constructor(
         }
     }
 
-    suspend fun getStories(): Result<List<ListStoryItem>> {
-        return try {
-            val response = apiService.getStories()
-            if (!response.error!!) {
-                Result.Success(response.listStory)
-            } else {
-                Result.Error(response.message ?: "Unknown error")
+//    suspend fun getStories(): Result<List<ListStoryItem>> {
+//        return try {
+//            val response = apiService.getStories()
+//            if (!response.error!!) {
+//                Result.Success(response.listStory)
+//            } else {
+//                Result.Error(response.message ?: "Unknown error")
+//            }
+//        } catch (e: Exception) {
+//            Result.Error(e.message ?: "Unknown error")
+//        }
+//    }
+
+    fun getStories(): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService)
             }
-        } catch (e: Exception) {
-            Result.Error(e.message ?: "Unknown error")
-        }
+        ).liveData
     }
 
     suspend fun getStory(id: String): Result<DetailStoryResponse>{
