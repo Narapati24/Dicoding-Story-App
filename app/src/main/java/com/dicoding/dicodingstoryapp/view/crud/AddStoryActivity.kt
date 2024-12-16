@@ -104,7 +104,8 @@ class AddStoryActivity : AppCompatActivity() {
             showImage()
             binding.buttonAdd.isEnabled = true
         } else {
-            viewModel.setCurrentImageUri(null)
+            viewModel.revertToLatestImageUri()
+            Log.d("Camera", "Picture taking failed")
         }
     }
 

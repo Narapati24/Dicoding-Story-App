@@ -17,8 +17,15 @@ class AddStoryViewModel(private val mApplication: Application, private val story
     private val _currentImageUri = MutableLiveData<Uri?>()
     val currentImageUri: LiveData<Uri?> get() = _currentImageUri
 
+    private var _latestImageUri: Uri? = null
+
     fun setCurrentImageUri(uri: Uri?) {
+        _latestImageUri = _currentImageUri.value
         _currentImageUri.value = uri
+    }
+
+    fun revertToLatestImageUri() {
+        _currentImageUri.value = _latestImageUri
     }
 
     private var _status = MutableLiveData<Result<AddStoryResponse>>()
